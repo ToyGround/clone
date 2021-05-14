@@ -31,3 +31,15 @@ graphQL install `@nestjs/graphql graphql-tools graphql apollo-server-express`
 
 참고
 레퍼런스 : https://stackoverflow.com/questions/63002127/parsing-error-parseroptions-project-has-been-set-for-typescript-eslint-parser
+
+**events.js:292 throw er; // Unhandled 'error' event**
+
+돌아가는 서버가 포트가 사용중이여서 재실행 할 수 없는 경우이다.
+
+`lsof -i tcp:3000` 현재 포트 확인
+
+`COMMAND  PID USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME node    6104 jjun   23u  IPv6 0x5b38956416efbbeb      0t0  TCP *:hbci (LISTEN)`
+
+라고 출력되면 6104 를 죽여준다.
+
+`kill -9 6104` 이후 재실행 하면 정상 작동!
