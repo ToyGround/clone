@@ -13,6 +13,7 @@
     "incremental": true
   },
   "include": [
-    ".eslintrc.js",
+    "src/**/*",
+    ".eslintrc.js"
   ]
 }
