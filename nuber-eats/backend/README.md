@@ -6,3 +6,31 @@ Nuber Eats Backend
 nest setting `nest g apllication project`
 
 graphQL install `@nestjs/graphql graphql-tools graphql apollo-server-express`
+
+
+
+### error 
+
+**eslint error : 파일마다 eslintrc 에러**
+
+현상 : 파일마다 아래와 같은 에러 메세지가 출력됨
+
+`error cannot read config file eslint-config-prettier @typescript-eslint.js`
+
+처리 : @typescript-eslint 버전 업데이트로 인해 설정을 변경해줌 eslintrc.js
+
+
+
+**eslint error : eslintrc.js**
+
+현상 : eslintrc.js 파일에서 아래와 같은 에러 메세지가 출력됨
+
+`parsing error: "parserOptions.project" has been set for @typescript-eslint/parser.
+The file does not match your project config: .eslintrc.js.
+The file must be included in at least one of the projects provided.`
+
+처리 : 파일이 프로젝트 구성과 달라서 생기는 에러, tsconfig.json 파일에서 `"include": [
+".eslintrc.js",
+]` 를 추가 해주었더니 해당 에러는 생기지 않았다.
+
+참고 레퍼런스 : https://stackoverflow.com/questions/63002127/parsing-error-parseroptions-project-has-been-set-for-typescript-eslint-parser
