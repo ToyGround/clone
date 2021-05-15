@@ -14,7 +14,7 @@ export class RestaurantsResolver {
   }
 
   @Mutation(returns => Boolean)
-  async createRestaurant(@Args() restaurantDto: restaurantDto): Promise<boolean> {
+  async createRestaurant(@Args('input') restaurantDto: restaurantDto): Promise<boolean> {
     try {
       await this.restaurantService.createRestaurant(restaurantDto);
       return true;
