@@ -8,6 +8,9 @@ nest setting `nest g apllication project`
 
 graphQL install `@nestjs/graphql graphql-tools graphql apollo-server-express`
 
+class validation `class-validator class-transformer`
+app.useGlobalPipes 사용하여 validation
+
 ### error
 
 **eslint error : 파일마다 eslintrc 에러**
