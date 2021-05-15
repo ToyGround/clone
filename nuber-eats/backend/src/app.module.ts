@@ -4,6 +4,8 @@ import {RestaurantsModule} from './restaurants/restaurants.module';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {ConfigModule} from '@nestjs/config';
 
+console.log(process.env.DB_PORT);
+
 @Module({
   imports    : [
     ConfigModule.forRoot({
@@ -14,12 +16,12 @@ import {ConfigModule} from '@nestjs/config';
     TypeOrmModule.forRoot({
       type       : 'postgres',
       host       : 'localhost',
-      port       : 5432,
-      username   : 'jjun',
-      password   : '8216',
-      database   : 'nuber-eats',
+      port       : +process.env.DB_PORT,
+      username   : process.env.DB_USERNAME,
+      password   : process.env.DB_PASSWORD,
+      database   : process.env.DB_NAME,
       synchronize: true,
-      logging    : false
+      logging    : true
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true
