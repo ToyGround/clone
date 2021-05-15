@@ -13,6 +13,9 @@ app.useGlobalPipes 사용하여 validation
 
 typeorm `yarn add @nestjs/typeorm typeorm pg`
 
+env 환경변수 설정 `@nestjs/config cross-env`
+환경 변수를 정의하는 패키지 실정, cross-env는 개발/프로덕션/테스트 모드를 설정해준다.
+
 ### error
 
 **eslint error : 파일마다 eslintrc 에러**
