@@ -3,6 +3,7 @@ import {Restaurant} from './entities/restaurant.entities';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
 import {createRestaurantDto} from './dtos/create-restaurant.dto';
+import {UpdateRestaurantDto} from './dtos/update-restaurant.dto';
 
 
 @Injectable()
@@ -32,5 +33,10 @@ export class RestaurantsService {
      * */
     const newRestaurant = this.restaurants.create(createRestaurantDto);
     return this.restaurants.save(newRestaurant);
+  }
+
+  updateRestaurant({id, data}: UpdateRestaurantDto) {
+    this.restaurants.update(id, {...data});
+
   }
 }
