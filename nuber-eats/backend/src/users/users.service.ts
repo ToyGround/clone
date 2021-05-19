@@ -62,4 +62,8 @@ export class UsersService {
 		// 찾은 유저의 password 확인
 		// JWT 만들고 user에게 주기
 	}
+
+	async findById(id: number): Promise<User> {
+		return this.users.findOne({id});
+	}
 }
