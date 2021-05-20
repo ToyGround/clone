@@ -6,12 +6,14 @@ import {CreateAccountInput} from './dtos/create-account-dto';
 import {LoginInput} from './dtos/login.dto';
 import {JwtService} from '../jwt/jwt.service';
 import {EditProfileInput} from './dtos/edit-profile.dto';
+import {Verification} from './entities/verification.entity';
 
 @Injectable()
 export class UsersService {
 	constructor(
 		@InjectRepository(User) private readonly users: Repository<User>,
-		private readonly jwtService: JwtService
+		@InjectRepository(Verification) private readonly verifications: Repository<Verification>,
+		private readonly jwtService: JwtService,
 	) {
 	}
 
@@ -24,7 +26,8 @@ export class UsersService {
 				// 에러 발생 :: throw 에러 발생하는 방법도 있지만 에러인 경우 리턴을 시키는 방법으로 진행, resolver 에서 에러 처리
 				return {ok: false, error: 'There is a user with that email already'};
 			}
-			await this.users.save(this.users.create({email, password, role}));
+			const user = await this.users.save(this.users.create({email, password, role}));
+			await this.verifications.save(this.verifications.create({user}));
 			return {ok: true};
 		} catch (e) {
 			// 에러 발생 :: throw 에러 발생하는 방법도 있지만 에러인 경우 리턴을 시키는 방법으로 진행, resolver 에서 에러 처리
@@ -72,6 +75,8 @@ export class UsersService {
 		const user = await this.users.findOne(userId);
 		if (email) {
 			user.email = email;
+			user.verified = false;
+			await this.verifications.save(this.verifications.create({user}));
 		}
 		if (password) {
 			user.password = password;
