@@ -7,7 +7,6 @@ import {MailModuleOptions} from './mail.interface';
 
 export class MailService {
   constructor(@Inject(CONFIG_OPTIONS) private readonly options: MailModuleOptions) {
-    
   }
 
   private async sendEmail(subject: string, content: string, to?: string) {
@@ -15,7 +14,9 @@ export class MailService {
     form.append('from', `mailgun@${this.options.domain}`);
     form.append('to', `${this.options.toEmail}`);
     form.append('subject', subject);
-    form.append('text', content);
+    form.append('template', 'please_confirm_your_account');
+    form.append('v:username', 'userName!');
+    form.append('v:code', 'aaacode');
 
     const response = await got(`https://api.mailgun.net/v3/${this.options.domain}/messages`,
       {
