@@ -25,7 +25,8 @@ import {MailModule} from './mail/mail.module';
         PRIVATE_KEY        : Joi.string().required(),
         MAILGUN_API_KEY    : Joi.string().required(),
         MAILGUN_DOMAIN_NAME: Joi.string().required(),
-        MAILGUN_FROM_EMAIL : Joi.string().required()
+        MAILGUN_FROM_EMAIL : Joi.string().required(),
+        MAILGUN_TO_EMAIL   : Joi.string().required()
       })
     }),
     TypeOrmModule.forRoot({
@@ -51,6 +52,7 @@ import {MailModule} from './mail/mail.module';
       apiKey   : process.env.MAILGUN_API_KEY,
       domain   : process.env.MAILGUN_DOMAIN_NAME,
       fromEmail: process.env.MAILGUN_FROM_EMAIL,
+      toEmail  : process.env.MAILGUN_TO_EMAIL,
     }),
   ],
   controllers: [],
