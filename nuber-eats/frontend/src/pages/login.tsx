@@ -3,6 +3,7 @@ import {gql, useMutation} from '@apollo/client';
 import {useForm} from 'react-hook-form';
 import FormError from '../components/FormError';
 import {LoginMutation, LoginMutationVariables} from '../__generated__/LoginMutation';
+import Button from '../components/Button';
 
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($loginInput:LoginInput!) {
@@ -20,10 +21,12 @@ interface ILoginForm {
 }
 
 export default function Login() {
-  const {register, getValues, handleSubmit, formState: {errors}} = useForm<ILoginForm>();
+  const {register, getValues, handleSubmit, formState: {errors, isValid}} = useForm<ILoginForm>({
+    mode: 'onChange'
+  });
 
   const onCompleted = (data: LoginMutation) => {
-    const {login: {ok, error, token}} = data;
+    const {login: {ok, token}} = data;
     if (ok) {
       console.log(token);
     }
@@ -71,7 +74,7 @@ export default function Login() {
                  placeholder="Password"/>
           {errors.password?.message && <FormError errorMessage={errors.password.message}/>}
           {errors.password?.type === 'minLength' && <FormError errorMessage={'비밀번호는 8자 이상입니다.'}/>}
-          <button className={'blue-button transition300 mt-5 p-3'}>{loading ? 'loading...' : 'LOGIN'}</button>
+          <Button isClickOn={isValid} loading={loading} actionText={'LOGIN'}/>
           {loginMutationResult?.login.error && <FormError errorMessage={loginMutationResult.login.error}/>}
         </form>
       </div>
