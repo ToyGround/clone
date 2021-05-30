@@ -2,6 +2,14 @@ import React from 'react';
 import {isLoggedInVar} from '../apollo';
 import {useForm} from 'react-hook-form';
 
+/**
+ * useForm 에 제네릭을 정의하면 interface에 맞게 정의 해준다.
+ * */
+interface IForm {
+  email: string;
+  password: string
+}
+
 export default function LoggedOutRouter() {
   /**
    * [react-hook-form]
@@ -11,7 +19,7 @@ export default function LoggedOutRouter() {
    * formState : 구조분해할당으로 errors 를 사용할 수 있다.
    * errors : 입력된 영역들을 체크하고 에러가 발생한 곳의 정보를 객체로 담아서 보내준다.
    * */
-  const {register, watch, handleSubmit, formState: {errors}} = useForm();
+  const {register, watch, handleSubmit, formState: {errors}} = useForm<IForm>();
   const onSubmit = () => {
     console.log(watch());
   };
@@ -34,12 +42,13 @@ export default function LoggedOutRouter() {
       <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
         <div>
           <input
-            {...register('email', {required: '이메일을 입력해주세요..', validate: (email: string) => (email.includes('@gmail'))})}
+            {...register('email', {required: '이메일을 입력해주세요.', validate: (email: string) => (email.includes('@gmail'))})}
             type="email"
             name="email"
             placeholder="email"
           />
-          {errors.email?.type === 'validate' && 'gmail만 사용 가능합니다.'}
+          {errors.email?.message && <p className={'font-bold text-red-600'}>{errors.email.message}</p>}
+          {errors.email?.type === 'validate' && <p className={'font-bold text-red-600'}>validate gmail만 사용 가능합니다.</p>}
         </div>
         <div>
           <input
@@ -48,6 +57,7 @@ export default function LoggedOutRouter() {
             name="password"
             placeholder="password"
           />
+          {errors.password?.message && <p className={'font-bold text-red-600'}>{errors.password.message}</p>}
         </div>
         <button className={'bg-blue-500 text-white'}>Click to Login</button>
       </form>
