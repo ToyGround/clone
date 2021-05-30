@@ -18,8 +18,8 @@ export default function LoggedOutRouter() {
   const onInvalid = () => {
     // input email 에서 validate를 @gmail 일때만 통과 시켜줌
     console.log('계정을 생성할 수 없습니다.');
+    console.log(errors);
   };
-  console.log(errors);
   /**
    * apollo, graphql 상태 변경을 위한 방법 "reactive variables"
    * apollo.ts -> isLoggedInVar 참고
@@ -32,9 +32,22 @@ export default function LoggedOutRouter() {
     <>
       <h1>LoggedOutRouter</h1>
       <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
-        <div><input {...register('email', {required: true, validate: (email: string) => (email.includes('@gmail'))})}
-                    type="email" name="email" placeholder="email"/></div>
-        <div><input {...register('password', {required: true})} type="password" name="password" placeholder="password"/>
+        <div>
+          <input
+            {...register('email', {required: '이메일을 입력해주세요..', validate: (email: string) => (email.includes('@gmail'))})}
+            type="email"
+            name="email"
+            placeholder="email"
+          />
+          {errors.email?.type === 'validate' && 'gmail만 사용 가능합니다.'}
+        </div>
+        <div>
+          <input
+            {...register('password', {required: '비밀번호를 입력해주세요.'})}
+            type="password"
+            name="password"
+            placeholder="password"
+          />
         </div>
         <button className={'bg-blue-500 text-white'}>Click to Login</button>
       </form>
