@@ -1,9 +1,10 @@
 import React from 'react';
 import {gql, useMutation} from '@apollo/client';
 import {useForm} from 'react-hook-form';
+import {Link} from 'react-router-dom';
 import FormError from '../components/FormError';
-import {LoginMutation, LoginMutationVariables} from '../__generated__/LoginMutation';
 import Button from '../components/Button';
+import {LoginMutation, LoginMutationVariables} from '../__generated__/LoginMutation';
 
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($loginInput:LoginInput!) {
@@ -77,6 +78,7 @@ export default function Login() {
           <Button isClickOn={isValid} loading={loading} actionText={'LOGIN'}/>
           {loginMutationResult?.login.error && <FormError errorMessage={loginMutationResult.login.error}/>}
         </form>
+        <p>회원이 아니신가요? <Link to={'/signup'} className={'text-blue-400 hover:underline'}>회원가입 바로가기</Link></p>
       </div>
     </div>
   );
