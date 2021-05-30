@@ -1,18 +1,42 @@
 import React from 'react';
+import {gql, useMutation} from '@apollo/client';
 import {useForm} from 'react-hook-form';
 import FormError from '../components/FormError';
+import {LoginMutation, LoginMutationVariables} from '../__generated__/LoginMutation';
+
+const LOGIN_MUTATION = gql`
+  mutation LoginMutation($email: String!, $password: String!) {
+    login(input : {
+      email : $email,
+      password: $password
+    }) {
+      ok
+      error
+      token
+    }
+  }
+`;
 
 interface ILoginForm {
-  email?: string;
-  password?: string
+  email: string;
+  password: string
 }
 
 export default function Login() {
   const {register, getValues, handleSubmit, formState: {errors}} = useForm<ILoginForm>();
+  const [LoginMutation, {loading, error, data}] = useMutation<LoginMutation, LoginMutationVariables>(LOGIN_MUTATION);
 
   const onSubmit = () => {
-    console.log('submit', getValues());
+    const {email, password} = getValues();
+    LoginMutation({
+      variables: {
+        email,
+        password
+      }
+    });
   };
+
+  console.log(data?.login);
 
   return (
     <div className={'h-screen flex items-center justify-center bg-gray-800'}>
