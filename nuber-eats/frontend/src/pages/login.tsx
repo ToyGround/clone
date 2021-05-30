@@ -5,11 +5,8 @@ import FormError from '../components/FormError';
 import {LoginMutation, LoginMutationVariables} from '../__generated__/LoginMutation';
 
 const LOGIN_MUTATION = gql`
-  mutation LoginMutation($email: String!, $password: String!) {
-    login(input : {
-      email : $email,
-      password: $password
-    }) {
+  mutation LoginMutation($loginInput:LoginInput!) {
+    login(input : $loginInput) {
       ok
       error
       token
@@ -30,8 +27,10 @@ export default function Login() {
     const {email, password} = getValues();
     LoginMutation({
       variables: {
-        email,
-        password
+        loginInput: {
+          email,
+          password
+        }
       }
     });
   };
