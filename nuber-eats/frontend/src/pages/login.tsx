@@ -21,21 +21,35 @@ interface ILoginForm {
 
 export default function Login() {
   const {register, getValues, handleSubmit, formState: {errors}} = useForm<ILoginForm>();
-  const [LoginMutation, {loading, error, data}] = useMutation<LoginMutation, LoginMutationVariables>(LOGIN_MUTATION);
 
-  const onSubmit = () => {
-    const {email, password} = getValues();
-    LoginMutation({
-      variables: {
-        loginInput: {
-          email,
-          password
-        }
-      }
-    });
+  const onCompleted = (data: LoginMutation) => {
+    const {login: {ok, error, token}} = data;
+    if (ok) {
+      console.log(token);
+    }
   };
 
-  console.log(data?.login);
+  //data : loginMutationResult 로 이름을 변경해준 이유는 data 라는 이름의 중복을 제거 하기 위함
+  const [LoginMutation, {
+    data: loginMutationResult,
+    loading
+  }] = useMutation<LoginMutation, LoginMutationVariables>(LOGIN_MUTATION, {
+    onCompleted,
+  });
+
+  const onSubmit = () => {
+    if (!loading) {
+      const {email, password} = getValues();
+      LoginMutation({
+        variables: {
+          loginInput: {
+            email,
+            password
+          }
+        }
+      });
+    }
+  };
 
   return (
     <div className={'h-screen flex items-center justify-center bg-gray-800'}>
@@ -57,8 +71,8 @@ export default function Login() {
                  placeholder="Password"/>
           {errors.password?.message && <FormError errorMessage={errors.password.message}/>}
           {errors.password?.type === 'minLength' && <FormError errorMessage={'비밀번호는 8자 이상입니다.'}/>}
-          <button className={'blue-button transition300 mt-5 p-3'}>LOGIN
-          </button>
+          <button className={'blue-button transition300 mt-5 p-3'}>{loading ? 'loading...' : 'LOGIN'}</button>
+          {loginMutationResult?.login.error && <FormError errorMessage={loginMutationResult.login.error}/>}
         </form>
       </div>
     </div>
