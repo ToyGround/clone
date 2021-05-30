@@ -1,5 +1,6 @@
 import React from 'react';
 import {useForm} from 'react-hook-form';
+import FormError from '../components/FormError';
 
 interface ILoginForm {
   email?: string;
@@ -24,15 +25,15 @@ export default function Login() {
                  required
                  className={'login-input transition300 mb-5'}
                  placeholder="Email"/>
-          {errors.email?.message && <span className={'font-medium text-red-600'}>{errors.email.message}</span>}
+          {errors.email?.message && <FormError errorMessage={errors.email.message}/>}
           <input {...register('password', {required: '비밀번호를 입력해주세요.', minLength: 8})}
                  name="password"
                  type="password"
                  required
                  className={'login-input transition300'}
                  placeholder="Password"/>
-          {errors.password?.message && <span className={'font-medium text-red-600'}>{errors.password.message}</span>}
-          {errors.password?.type === 'minLength' && <span className={'font-medium text-red-600'}>비밀번호는 8자 이상입니다.</span>}
+          {errors.password?.message && <FormError errorMessage={errors.password.message}/>}
+          {errors.password?.type === 'minLength' && <FormError errorMessage={'비밀번호는 8자 이상입니다.'}/>}
           <button className={'blue-button transition300 mt-5 p-3'}>LOGIN
           </button>
         </form>
