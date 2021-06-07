@@ -62,7 +62,7 @@ export default function Login() {
       <div className={'bg-white px-10 w-full max-w-lg py-10 rounded-md text-center'}>
         <h3 className={'text-2xl text-gray-800'}>Login</h3>
         <form onSubmit={handleSubmit(onSubmit)} className={'grid gap-3 p-5'}>
-          <input {...register('email', {required: '이메일을 입력해주세요.'})}
+          <input {...register('email', {required: '이메일을 입력해주세요.', pattern: {value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message:'이메일 형식으로 입력해주세요.'}})}
                  name="email"
                  type="email"
                  required
