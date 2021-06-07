@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ApolloProvider} from '@apollo/client';
+import { HelmetProvider } from 'react-helmet-async';
 import App from './App';
 import client from './apollo';
 import reportWebVitals from './reportWebVitals';
@@ -10,7 +11,9 @@ import './styles/styles.css'
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-    <App />
+      <HelmetProvider>
+        <App />
+      </HelmetProvider>
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root')

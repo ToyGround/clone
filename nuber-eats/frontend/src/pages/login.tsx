@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 import FormError from '../components/FormError';
 import Button from '../components/Button';
 import {LoginMutation, LoginMutationVariables} from '../__generated__/LoginMutation';
+import { Helmet } from 'react-helmet-async';
 
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($loginInput:LoginInput!) {
@@ -57,6 +58,7 @@ export default function Login() {
 
   return (
     <div className={'h-screen flex items-center justify-center bg-gray-800'}>
+      <Helmet><title>Login | nuber eats</title></Helmet>
       <div className={'bg-white px-10 w-full max-w-lg py-10 rounded-md text-center'}>
         <h3 className={'text-2xl text-gray-800'}>Login</h3>
         <form onSubmit={handleSubmit(onSubmit)} className={'grid gap-3 p-5'}>
