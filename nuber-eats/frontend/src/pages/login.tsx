@@ -6,7 +6,8 @@ import FormError from '../components/FormError';
 import Button from '../components/Button';
 import {LoginMutation, LoginMutationVariables} from '../__generated__/LoginMutation';
 import {Helmet} from 'react-helmet-async';
-import {isLoggedInVar} from '../apollo';
+import {authToken, isLoggedInVar} from '../apollo';
+import {LOCALSTORAGE_TOKEN_KEY} from '../constants';
 
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($loginInput:LoginInput!) {
@@ -30,8 +31,9 @@ export default function Login() {
 
   const onCompleted = (data: LoginMutation) => {
     const {login: {ok, token}} = data;
-    if (ok) {
-      console.log(token);
+    if (ok && token) {
+      localStorage.setItem(LOCALSTORAGE_TOKEN_KEY, token);
+      authToken(token);
       isLoggedInVar(true);
     }
   };
@@ -67,7 +69,7 @@ export default function Login() {
           <input {...register('email', {
             required: '이메일을 입력해주세요.',
             pattern : {
-              value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+              value  : /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
               message: '이메일 형식으로 입력해주세요.'
             }
           })}
