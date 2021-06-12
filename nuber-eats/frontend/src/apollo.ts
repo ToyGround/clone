@@ -1,5 +1,6 @@
-import {ApolloClient, InMemoryCache, makeVar} from '@apollo/client';
+import {ApolloClient, createHttpLink, InMemoryCache, makeVar} from '@apollo/client';
 import {LOCALSTORAGE_TOKEN_KEY} from './constants';
+import {setContext} from '@apollo/client/link/context';
 
 /**
  * apollo, graphql 상태 변경을 위한 방법 "reactive variables"
@@ -11,8 +12,21 @@ const isAuthToken = Boolean(token);
 export const isLoggedInVar = makeVar(isAuthToken);
 export const authToken = makeVar(token);
 
+const httpLink = createHttpLink({
+  uri: 'http://localhost:4000/graphql'
+});
+
+const authLink = setContext((_, {headers}) => {
+  return {
+    headers: {
+      ...headers,
+      'x-jwt': authToken() || ''
+    }
+  };
+});
+
 const client = new ApolloClient({
-  uri  : 'http://localhost:4000/graphql',
+  link : authLink.concat(httpLink),
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
